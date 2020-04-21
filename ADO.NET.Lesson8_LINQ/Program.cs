@@ -265,7 +265,7 @@ namespace ADO.NET.Lesson8_LINQ
                         join t in timers
                         on a.AreaId equals t.AreaId
                         where a.AssemblyArea == 28
-                        select new { a.WorkingPeople, t.DateStart, t.DateFinish };
+                        select new { a.WorkingPeople, t.DateStart, t.DateFinish }; 
                         
 
             foreach (var item in query)
