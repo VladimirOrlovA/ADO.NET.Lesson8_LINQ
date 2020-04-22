@@ -200,7 +200,8 @@ namespace ADO.NET.Lesson8_LINQ
                 AreaId = (int)s["AreaId"],
                 TypeArea = (int)s["TypeArea"],
                 IP = s["IP"].ToString(),
-                WorkingPeople = (int)s["WorkingPeople"]
+                WorkingPeople = (int)s["WorkingPeople"],
+                FullName = (string)s["FullName"]
             })
                 .ToList();
 
@@ -259,19 +260,33 @@ namespace ADO.NET.Lesson8_LINQ
 
 
             /*h.	Для таблиц Area и Timer, отобразить данные из таблицы
-             * – Timer, только для зон/участок – 22, 23, 24, 25, 26, 27, 28*/
+             *      – Timer, только для зон/участок – 22, 23, 24, 25, 26, 27, 28*/
+
+            int[] numbers = { 22, 23, 24, 25, 26, 27, 28 };
 
             var query = from a in areas
                         join t in timers
                         on a.AreaId equals t.AreaId
-                        where a.AssemblyArea == 28
-                        select new { a.WorkingPeople, t.DateStart, t.DateFinish }; 
-                        
+                        where numbers.Contains(a.AreaId)
+                        select new { a.AreaId, a.WorkingPeople, a.FullName, t.DateStart, t.DateFinish};
+
+            query = query.Distinct();
 
             foreach (var item in query)
             {
-                Console.WriteLine(item.WorkingPeople);
+                Console.WriteLine(item.AreaId + "\t" +
+                                  item.WorkingPeople + "\t" +
+                                  item.DateStart + "\t" +
+                                  item.DateFinish + "\t" +
+                                  item.FullName);
             }
+
+            //var query1 = areas.Where(w => numbers.Contains(w.AreaId)).ToList();
+
+            //foreach (var item in query1)
+            //{
+            //    Console.WriteLine(item.WorkingPeople + "\t" + item.AreaId);
+            //}
 
         }
 
@@ -282,6 +297,7 @@ namespace ADO.NET.Lesson8_LINQ
             public string IP { get; set; }
             public int WorkingPeople { get; set; }
             public int AssemblyArea { get; set; }
+            public string FullName { get; set; }
 
             public int? OrderExecution { get; set; }  // nullable
         }
